@@ -6,7 +6,7 @@ In this unit we will practice creating a network link setting in RHEL.
 
 ssh to the server you will be working on and sudo -i.
 
-First let's find out the interfacename to the the network card
+First let's find out the interface name for the the network card
 
 ```
 # ip link
@@ -17,26 +17,26 @@ First let's find out the interfacename to the the network card
     altname enp0s3
     altname ens3
 ```
-Let's see what is the current active link
+Let's see what is the current active connection
 ```
 # nmcli con show --active
 NAME                UUID                                  TYPE      DEVICE 
 Wired connection 1  3968ff88-8373-3810-a63f-1cdbb896767e  ethernet  eth0
 ```
 
-Let's create our new connection
+Let's create our new connection with a static configuration
 ```
 # nmcli con add con-name lab ifname eth0 type ethernet ipv4.method manual ipv4.addresses 172.25.250.11/24 ipv4.gateway 172.25.250.254 ipv4.dns 172.25.250.254
 Connection 'lab' (86f55127-fe96-4b05-945f-c9f7f6ef5a39) successfully added.
 ```
-Let's set it up to autoconnect on lab and not on Wired connection 1
+Let's set up the new connection to autoconnect on lab and set other connections not to autoconnect
 
 ```
 # nmcli con modify lab connection.autoconnect yes
 # nmcli con modif 'Wired connection 1' connection.autoconnect no
 ```
 
-Let's add another IP address to the lab connection
+Let's add another IP address to the new connection
 ```
 # nmcli con modify lab +ipv4.addresses 10.0.1.1/24
 ```
@@ -52,12 +52,14 @@ method=manual
 
 ```
 
-update the local /etc/hosts file
+update the local /etc/hosts file with the seoncd ip addres and so we can reference the connection with the private name
 ```
 # echo "10.0.1.1 private" >> /etc/hosts
 ```
 
-Reboot the system and wait for it to restart to test the new connection.  Logon to server to check the new connection
+Reboot the system and wait for it to restart to test the new connection.  
+
+Logon to server to check the new connection
 ```
 # nmcli con show --active
 NAME  UUID                                  TYPE      DEVICE 
