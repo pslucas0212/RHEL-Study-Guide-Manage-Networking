@@ -54,7 +54,7 @@ method=manual
 
 update the local /etc/hosts file
 ```
-# echo "10.0.1.1 private" >> /etc/hhosts
+# echo "10.0.1.1 private" >> /etc/hosts
 ```
 
 Reboot the system and wait for it to restart to test the new connection.  Logon to server to check the new connection
